@@ -24,9 +24,13 @@ class Mios < Sinatra::Base
     # Here I'm taking the passed name of "master bedroom" and changing it to "Master Bedroom Lights"
     device = mios.devices.find {|d| d.name == name.split.map(&:capitalize).join(' ') + " Lights"}
     if mode == "on"
-      device.on!
+      device.on! { |obj| 
+        return "#{obj.name} is being turned on."
+      }
     elsif mode == "off"
-      device.off!
+      device.off! { |obj| 
+        return "#{obj.name} is being turned off."
+      }
     end
   end
 end
